@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{d6ca4009-877c-4d89-9774-b4c1370f02f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media">
+      <UniqueIdentifier>{81e137b1-4ea3-4abe-829a-6f64bc994cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="helper">
+      <UniqueIdentifier>{6efe3a76-edc0-4f6f-b45a-1869ab863c2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Additional Files">
+      <UniqueIdentifier>{f58e6ada-0402-403d-b057-336a62c4f3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="helper\stb">
+      <UniqueIdentifier>{4cdcf606-56e5-49a6-9e23-5c61a5a98c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Scenario3">
+      <UniqueIdentifier>{b2ab3def-c72a-4535-880e-73c0d26f9e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Scenario1">
+      <UniqueIdentifier>{7164138e-f139-4cd1-a6a6-2459a5895b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Scenario2">
+      <UniqueIdentifier>{6c1c4d08-1541-4ce6-827c-63322bcbe18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Scenario4">
+      <UniqueIdentifier>{bb95eca7-3f58-4dba-93b5-b2e747508d2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Skybox">
+      <UniqueIdentifier>{07b3eac6-79e5-4901-b10b-88b0545aa723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Scenario5">
+      <UniqueIdentifier>{94927318-f40e-4893-80ad-8fbade7396cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui3">
+      <UniqueIdentifier>{160322e9-4a3d-4236-9a4d-8f66ed1ac26e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gl3w">
+      <UniqueIdentifier>{8da06cec-60c3-4730-bc6c-7b54ab1f67b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="helper\stb\NewItems">
+      <UniqueIdentifier>{d8f15a19-813c-4e9d-8feb-177a66b4031d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scenebasic_uniform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\glslprogram.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\glutils.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\texture.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Additional Files\objmesh.cpp">
+      <Filter>Additional Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Additional Files\plane.cpp">
+      <Filter>Additional Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Additional Files\trianglemesh.cpp">
+      <Filter>Additional Files</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\stb\stb_image.cpp">
+      <Filter>helper\stb</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\skybox.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui.cpp">
+      <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_demo.cpp">
+      <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_draw.cpp">
+      <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_impl_glfw_gl3.cpp">
+      <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="gl3w\gl3w.c">
+      <Filter>gl3w</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="scenebasic_uniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\glslprogram.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\glutils.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\scene.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\scenerunner.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\texture.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\aabb.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\drawable.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\glutils.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\objmesh.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\plane.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\trianglemesh.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Additional Files\utils.h">
+      <Filter>Additional Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\stb_image.h">
+      <Filter>helper\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\stb_image_write.h">
+      <Filter>helper\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\skybox.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imconfig.h">
+      <Filter>ImGui3</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui.h">
+      <Filter>ImGui3</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui_impl_glfw_gl3.h">
+      <Filter>ImGui3</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui_internal.h">
+      <Filter>ImGui3</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\stb_rect_pack.h">
+      <Filter>helper\stb\NewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\stb_textedit.h">
+      <Filter>helper\stb\NewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\stb_truetype.h">
+      <Filter>helper\stb\NewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="gl3w\glcorearb.h">
+      <Filter>gl3w</Filter>
+    </ClInclude>
+    <ClInclude Include="gl3w\gl3w.h">
+      <Filter>gl3w</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\Scenario3.frag">
+      <Filter>shaders\Scenario3</Filter>
+    </None>
+    <None Include="shader\Scenario3.vert">
+      <Filter>shaders\Scenario3</Filter>
+    </None>
+    <None Include="shader\Scenario1.frag">
+      <Filter>shaders\Scenario1</Filter>
+    </None>
+    <None Include="shader\Scenario1.vert">
+      <Filter>shaders\Scenario1</Filter>
+    </None>
+    <None Include="shader\Scenario2.frag">
+      <Filter>shaders\Scenario2</Filter>
+    </None>
+    <None Include="shader\Scenario2.vert">
+      <Filter>shaders\Scenario2</Filter>
+    </None>
+    <None Include="shader\Scenario4.frag">
+      <Filter>shaders\Scenario4</Filter>
+    </None>
+    <None Include="shader\Scenario4.vert">
+      <Filter>shaders\Scenario4</Filter>
+    </None>
+    <None Include="shader\SkyBox.frag">
+      <Filter>shaders\Skybox</Filter>
+    </None>
+    <None Include="shader\SkyBox.vert">
+      <Filter>shaders\Skybox</Filter>
+    </None>
+    <None Include="shader\Scenario5.frag">
+      <Filter>shaders\Scenario5</Filter>
+    </None>
+    <None Include="shader\Scenario5.vert">
+      <Filter>shaders\Scenario5</Filter>
+    </None>
+  </ItemGroup>
+</Project>
