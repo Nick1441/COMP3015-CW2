@@ -55,6 +55,12 @@
     <Filter Include="helper\stb\NewItems">
       <UniqueIdentifier>{d8f15a19-813c-4e9d-8feb-177a66b4031d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="irrKlang">
+      <UniqueIdentifier>{d041038f-ab8e-4444-9ecc-6bfe9d91cd62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\WireFrame">
+      <UniqueIdentifier>{c08dbdb9-2c1c-44c5-9313-5b04e655210a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,6 +96,9 @@
     <ClCompile Include="helper\skybox.cpp">
       <Filter>helper</Filter>
     </ClCompile>
+    <ClCompile Include="gl3w\gl3w.c">
+      <Filter>gl3w</Filter>
+    </ClCompile>
     <ClCompile Include="imGUI\imgui.cpp">
       <Filter>ImGui3</Filter>
     </ClCompile>
@@ -99,11 +108,17 @@
     <ClCompile Include="imGUI\imgui_draw.cpp">
       <Filter>ImGui3</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_impl_glfw_gl3.cpp">
+    <ClCompile Include="imGUI\imgui_impl_opengl3.cpp">
       <Filter>ImGui3</Filter>
     </ClCompile>
-    <ClCompile Include="gl3w\gl3w.c">
-      <Filter>gl3w</Filter>
+    <ClCompile Include="imGUI\imgui_tables.cpp">
+      <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_widgets.cpp">
+      <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_impl_glfw.cpp">
+      <Filter>ImGui3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,32 +170,35 @@
     <ClInclude Include="helper\skybox.h">
       <Filter>helper</Filter>
     </ClInclude>
+    <ClInclude Include="gl3w\gl3w.h">
+      <Filter>gl3w</Filter>
+    </ClInclude>
+    <ClInclude Include="gl3w\glcorearb.h">
+      <Filter>gl3w</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\imstb_rectpack.h">
+      <Filter>helper\stb\NewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\imstb_textedit.h">
+      <Filter>helper\stb\NewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\imstb_truetype.h">
+      <Filter>helper\stb\NewItems</Filter>
+    </ClInclude>
     <ClInclude Include="imGUI\imconfig.h">
       <Filter>ImGui3</Filter>
     </ClInclude>
     <ClInclude Include="imGUI\imgui.h">
       <Filter>ImGui3</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui_impl_glfw_gl3.h">
+    <ClInclude Include="imGUI\imgui_impl_opengl3.h">
       <Filter>ImGui3</Filter>
     </ClInclude>
     <ClInclude Include="imGUI\imgui_internal.h">
       <Filter>ImGui3</Filter>
     </ClInclude>
-    <ClInclude Include="helper\stb\stb_rect_pack.h">
-      <Filter>helper\stb\NewItems</Filter>
-    </ClInclude>
-    <ClInclude Include="helper\stb\stb_textedit.h">
-      <Filter>helper\stb\NewItems</Filter>
-    </ClInclude>
-    <ClInclude Include="helper\stb\stb_truetype.h">
-      <Filter>helper\stb\NewItems</Filter>
-    </ClInclude>
-    <ClInclude Include="gl3w\glcorearb.h">
-      <Filter>gl3w</Filter>
-    </ClInclude>
-    <ClInclude Include="gl3w\gl3w.h">
-      <Filter>gl3w</Filter>
+    <ClInclude Include="imGUI\imgui_impl_glfw.h">
+      <Filter>ImGui3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +237,15 @@
     </None>
     <None Include="shader\Scenario5.vert">
       <Filter>shaders\Scenario5</Filter>
+    </None>
+    <None Include="shader\Wireframe\Wireframe.frag">
+      <Filter>shaders\WireFrame</Filter>
+    </None>
+    <None Include="shader\Wireframe\Wireframe.geom">
+      <Filter>shaders\WireFrame</Filter>
+    </None>
+    <None Include="shader\Wireframe\Wireframe.vert">
+      <Filter>shaders\WireFrame</Filter>
     </None>
   </ItemGroup>
 </Project>

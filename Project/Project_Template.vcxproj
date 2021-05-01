@@ -158,7 +158,10 @@
     <ClCompile Include="imGUI\imgui.cpp" />
     <ClCompile Include="imGUI\imgui_demo.cpp" />
     <ClCompile Include="imGUI\imgui_draw.cpp" />
-    <ClCompile Include="imGUI\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="imGUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="imGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imGUI\imgui_tables.cpp" />
+    <ClCompile Include="imGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scenebasic_uniform.cpp" />
   </ItemGroup>
@@ -177,15 +180,16 @@
     <ClInclude Include="helper\scene.h" />
     <ClInclude Include="helper\scenerunner.h" />
     <ClInclude Include="helper\skybox.h" />
+    <ClInclude Include="helper\stb\imstb_rectpack.h" />
+    <ClInclude Include="helper\stb\imstb_textedit.h" />
+    <ClInclude Include="helper\stb\imstb_truetype.h" />
     <ClInclude Include="helper\stb\stb_image.h" />
     <ClInclude Include="helper\stb\stb_image_write.h" />
-    <ClInclude Include="helper\stb\stb_rect_pack.h" />
-    <ClInclude Include="helper\stb\stb_textedit.h" />
-    <ClInclude Include="helper\stb\stb_truetype.h" />
     <ClInclude Include="helper\texture.h" />
     <ClInclude Include="imGUI\imconfig.h" />
     <ClInclude Include="imGUI\imgui.h" />
-    <ClInclude Include="imGUI\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="imGUI\imgui_impl_glfw.h" />
+    <ClInclude Include="imGUI\imgui_impl_opengl3.h" />
     <ClInclude Include="imGUI\imgui_internal.h" />
     <ClInclude Include="scenebasic_uniform.h" />
   </ItemGroup>
@@ -202,6 +206,9 @@
     <None Include="shader\Scenario5.vert" />
     <None Include="shader\SkyBox.frag" />
     <None Include="shader\SkyBox.vert" />
+    <None Include="shader\Wireframe\Wireframe.frag" />
+    <None Include="shader\Wireframe\Wireframe.geom" />
+    <None Include="shader\Wireframe\Wireframe.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

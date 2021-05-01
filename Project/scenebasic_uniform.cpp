@@ -2,9 +2,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>
 #include <iostream>
+
 #include "imGUI/imgui.h"
-#include "imGUI/imgui_impl_glfw_gl3.h"
-//#include "gl3w/gl3w.h"
+#include "imGUI/imgui_impl_opengl3.h"
+#include "imGUI/imgui_impl_glfw.h"
+
+
 
 using std::cerr;
 using std::endl;
@@ -19,13 +22,35 @@ int OverallLoad = 1;
 bool Scene1Toggle = true;
 bool Scene4Toggle = false;
 
+//Objects Position
+float ObjX = 0.0f;
+float ObjY = 0.0f;
+float ObjZ = 0.0f;
+
+//Objects Scale
+float ObjScale = 0.8f;
+
+//Objects Rotation
+float ObjRotationX = 0.0f;
+float ObjRotationY = 0.0f;
+float ObjRotationZ = 0.0f;
+bool AutoRotate = false;
+float AutoRotateSpeed = 50.0f;
+
+//Objects Wire Frame
+float ObjWFWidth = 0.75f;
+vec4 ObjWFColor = vec4(0.05, 0.0f, 0.05f, 1.0f);
+vec4 ObjWFBack = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
 
 //Setting Components Used Throughout Project
-SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100), angle_2(0.0f), angle_1(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f), sky(100.0f)
+SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100), angle_2(0.0f), angle_1(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f), sky(100.0f), Current(), CarModel(), CarModelNormal()
 {
     //Loading In Models, Just Texture & Normal Mapping Models.
-    CarModel = ObjMesh::load("media/SportsCar.obj", true);
+    CarModel = ObjMesh::load("media/SportsCar.obj", false);
     CarModelNormal = ObjMesh::load("media/SportsCar.obj", false, true);
+    Current = ObjMesh::load("media/Dice.obj", false, true);
+    //Current = ObjMesh::load("media/bs_ears.obj", false);
 }
 
 void SceneBasic_Uniform::initScene()
@@ -33,8 +58,8 @@ void SceneBasic_Uniform::initScene()
     
     compile();                                                                              //Compile all shaders.
     glEnable(GL_DEPTH_TEST);
-
-    projection = mat4(1.0f);                                                                //Default Projection Mat
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    //projection = mat4(1.0f);                                                                //Default Projection Mat
     angle_2 = glm::radians(90.0f);                                                          //Defualting Angle to Start Rotation of Camera.
 
     //Loading in Textures.
@@ -66,7 +91,8 @@ void SceneBasic_Uniform::initScene()
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
 
     LoadShadersVariables();
-    
+
+    WireFramePre();
 }
 
 void SceneBasic_Uniform::compile()
@@ -144,6 +170,19 @@ void SceneBasic_Uniform::compile()
         cerr << e.what() << endl;
         exit(EXIT_FAILURE);
     }
+
+    try {
+        Shader_WireFrame.compileShader("shader/Wireframe/Wireframe.vert");
+        Shader_WireFrame.compileShader("shader/Wireframe/Wireframe.frag");
+        Shader_WireFrame.compileShader("shader/Wireframe/Wireframe.geom");
+        Shader_WireFrame.link();
+        Shader_WireFrame.use();
+    }
+    catch (GLSLProgramException& e)
+    {
+        cerr << e.what() << endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 void SceneBasic_Uniform::update(float t)
@@ -193,70 +232,54 @@ void SceneBasic_Uniform::render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    
-    //IMGUI
-    ImGui_ImplGlfwGL3_NewFrame();
+    RenderGUI();
+    RenderGUIChecker();
+
+    if (show_Wireframe)
+    {
+        
+        WireFrame();
+    }
+    else
+    {
+        TestWindow();
+        RenderSkyBox();
+    }
     
+    //WireFrame();
 
-    {
-        static float f = 0.0f;
-        ImGui::Text("Hello, world!");
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-        //ImGui::ColorEdit3("clear color", (float*)&clear_color);
-        if (ImGui::Button("Test Window")) show_test_window ^= 1;
-        if (ImGui::Button("Another Window")) show_another_window ^= 1;
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    }
-
-    // 2. Show another simple window, this time using an explicit Begin/End pair
-    if (show_another_window)
-    {
-        ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
-        ImGui::Begin("Another Window", &show_another_window);
-        ImGui::Text("Hello");
-        ImGui::End();
-    }
-
-    // 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
-    if (show_test_window)
-    {
-        ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-        ImGui::ShowTestWindow(&show_test_window);
-    }
-
-   // //int display_w, display_h;
-   // //glfwGetFramebufferSize(window, &display_w, &display_h);
-   // //glViewport(0, 0, display_w, display_h);
-   //// glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-   // //glClear(GL_COLOR_BUFFER_BIT);
-   //
+    //if (OverallLoad == 1)
+    //{
+    //    Scenario_1();
+    //    RenderSkyBox();
+    //}
+    //else if (OverallLoad == 2)
+    //{
+    //    Scenario_2();
+    //    RenderSkyBox();
+    //}
+    //else if (OverallLoad == 3)
+    //{
+    //    Scenario_3();
+    //    RenderSkyBox();
+    //}
+    //else if (OverallLoad == 4)
+    //{
+    //    Scenario_4();
+    //    RenderSkyBox();
+    //}
+    //else if (OverallLoad == 5)
+    //{
+    //    Scenario_5();
+    //    RenderSkyBox();
+    //}
+    //This is what renders the GUI
 
 
-    if (OverallLoad == 1)
-    {
-        Scenario_1();
-        RenderSkyBox();
-    }
-    else if (OverallLoad == 2)
-    {
-        Scenario_2();
-        RenderSkyBox();
-    }
-    else if (OverallLoad == 3)
-    {
-        Scenario_3();
-        RenderSkyBox();
-    }
-    else if (OverallLoad == 4)
-    {
-        Scenario_4();
-        RenderSkyBox();
-    }
-    else if (OverallLoad == 5)
-    {
-        Scenario_5();
-        RenderSkyBox();
-    }
     ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
 }
 
 //Setting Matrices for Each Shader. All The same code, just differnt Shaders.
@@ -303,6 +326,18 @@ void SceneBasic_Uniform::setMatrices5()
     Shader_5.setUniform("ModelViewMatrix", mv);
     Shader_5.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
     Shader_5.setUniform("MVP", projection * mv);
+}
+
+void SceneBasic_Uniform::setMatrices6()
+{
+    mat4 mv = view * model;
+
+    Shader_WireFrame.setUniform("ModelViewMatrix", mv);
+    Shader_WireFrame.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
+
+
+    Shader_WireFrame.setUniform("MVP", projection2 * mv);
+    Shader_WireFrame.setUniform("ViewportMatrix", viewport);
 }
 
 void SceneBasic_Uniform::setMatricesSky()
@@ -407,6 +442,14 @@ void SceneBasic_Uniform::resize(int w, int h)
     width = w;
     height = h;
     projection = glm::perspective(glm::radians(70.0f), (float)w / h, 0.3f, 100.0f);
+
+    float w2 = w / 2.0f;
+    float h2 = h / 2.0f;
+    projection2 = glm::perspective(glm::radians(70.0f), (float)w / h, 0.3f, 100.0f);
+    viewport = mat4(vec4(w2, 0.0f, 0.0f, 0.0f),
+        vec4(0.0f, h2, 0.0f, 0.0f),
+        vec4(0.0f, 0.0f, 1.0f, 0.0f),
+        vec4(w2 + 0, h2 + 0, 0.0f, 1.0f));
 }
 
 void  SceneBasic_Uniform::InputPressed(int num)
@@ -485,7 +528,7 @@ void  SceneBasic_Uniform::Scenario_1()
     model = glm::translate(model, vec3(-2.0f, -0.45f, 0.0f));
     model = glm::scale(model, vec3(0.8f, 0.8f, 0.8f));
     setMatrices();
-    CarModelNormal->render();
+    Current->render();
 
     //Uses differnt pass for differnt Texture! Pink & Blue!
     Shader_1.setUniform("Pass", 2);
@@ -495,7 +538,7 @@ void  SceneBasic_Uniform::Scenario_1()
     model = glm::translate(model, vec3(0.0f, -0.45f, 1.0f));
     model = glm::scale(model, vec3(0.8f, 0.8f, 0.8f));
     setMatrices();
-    CarModelNormal->render();
+    Current->render();
 
     //Uses differnt pass for differnt Texture! Green & Pink!
     Shader_1.setUniform("Pass", 3);
@@ -505,7 +548,7 @@ void  SceneBasic_Uniform::Scenario_1()
     model = glm::translate(model, vec3(2.0f, -0.45f, 2.0f));
     model = glm::scale(model, vec3(0.8f, 0.8f, 0.8f));
     setMatrices();
-    CarModelNormal->render();
+    Current->render();
 }
 
 void  SceneBasic_Uniform::Scenario_2()
@@ -695,4 +738,369 @@ void SceneBasic_Uniform::RenderSkyBox()
     //Render Skybox.
     setMatricesSky();
     sky.render();
+}
+
+void SceneBasic_Uniform::RenderGUI()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            ImGui::MenuItem("Open", "Open .obj File", &show_Open_File);
+            ImGui::Separator();
+            ImGui::MenuItem("Close", "Exit Program");
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Object"))
+        {
+            ImGui::MenuItem("Transfrom", "Move Object", &show_transform);
+            ImGui::MenuItem("Rotation", "Rotate Object", &show_Rotation);
+            ImGui::MenuItem("Scale", "Scale Object", &show_Scale);
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Shaders"))
+        {
+            ImGui::MenuItem("WireFrame", "View Objects Wireframe", &show_Wireframe);
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMainMenuBar();
+    }
+}
+
+void SceneBasic_Uniform::RenderGUIChecker()
+{
+    if (show_Open_File)
+    {
+        ShowOpenFile();
+    }
+
+    if (show_transform)
+    {
+        ShowTransformWindow();
+    }
+
+    if (show_Scale)
+    {
+        ShowScaleWindow();
+    }
+
+    if (show_Rotation) { ShowRotationWindow(); }
+    if (show_Wireframe) { ShowWireframeWindow(); }
+
+}
+
+void SceneBasic_Uniform::ShowOpenFile()
+{
+    ImGuiWindowFlags OpenFileTags = 0;
+    OpenFileTags |= ImGuiWindowFlags_NoResize;
+    OpenFileTags |= ImGuiWindowFlags_NoCollapse;
+    OpenFileTags |= ImGuiWindowFlags_NoMove;
+
+    static char fileInput[64] = "";
+    static char textureInput[64] = "";
+    static char normalInput[64] = "";
+    
+    {
+        ImGui::Begin("Open File", &show_Open_File, OpenFileTags);
+        ImGui::Text("Pace all .obj infomation into 'ImportedObj'");
+        ImGui::Text("Type .obj File Name. (Including Caps)");
+        ImGui::InputText(".obj - Object", fileInput, 64, ImGuiInputTextFlags_CharsNoBlank);
+        ImGui::InputText(".png - Texture", fileInput, 64, ImGuiInputTextFlags_CharsNoBlank);
+        ImGui::Checkbox("Includes Normal", &include_Normal);
+        if (include_Normal)
+        {
+            ImGui::InputText(".png - Normal", fileInput, 64, ImGuiInputTextFlags_CharsNoBlank);
+        }
+        if (error_Open_File)
+        {
+            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Issue Loading, Check Spelling.");
+        }
+        //Check Box for has Texture & Normal
+
+        if (ImGui::Button("Open"))
+        {
+            string InputFileString(fileInput);
+            
+            if (InputFileString != "")
+            {
+                error_Open_File = false;
+
+                string NewString = "media/" + InputFileString + ".obj";
+                const char* NewChar = NewString.c_str();
+
+                //This will set new File Location
+                if (include_Normal == true)
+                {
+                    Current = ObjMesh::load(NewChar, false, true);
+                    NormalInclude = true;
+                    show_Open_File = false;
+                }
+                else
+                {
+                    Current = ObjMesh::load(NewChar, true);
+                    NormalInclude = false;
+                    show_Open_File = false;
+                }
+            }
+            else
+            {
+                error_Open_File = true;
+            }
+        }
+        ImGui::End();
+    }
+
+
+}
+
+void SceneBasic_Uniform::TestWindow()
+{
+                                                         //Default Projection Mat
+
+    //Setting Details for the camera toogle. Either still or uses angle to rotate.
+    vec3 cameraPos = vec3(0.0f);
+    cameraPos = vec3(0.0f * cos(90), 2.0f, 5.5f * sin(90));
+    view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    //Setting Shader To Use
+    Shader_1.use();
+
+    //Setting Lights Positions(Move Into Scenario1)
+    vec4 lightPos = vec4(10.0f * cos(angle_1), 20.0f, 10.0f * sin(angle_1), 6.0f);
+    Shader_1.setUniform("Light.Position", view * lightPos);
+
+    //Setting Pass, This will ignore the texture, so it isnt on the floor!
+    Shader_1.setUniform("Pass", 1);
+
+    //Setting Models Location and Scale
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(0.0f, -0.45f, 0.0f));
+    setMatrices();
+    plane.render();
+
+    //Setting Pass 0 for Differnt Textures! Gray this one!
+    Shader_1.setUniform("Pass", 2);
+
+    //Setting Models Location and Scale
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(ObjX, ObjY, ObjZ));
+    model = glm::scale(model, vec3(ObjScale, ObjScale, ObjScale));
+
+    //Rotation
+    if (!AutoRotate)
+    {
+        model = glm::rotate(model, glm::radians(ObjRotationX * 57.5f), vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ObjRotationY * 57.5f), vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ObjRotationZ * 57.5f), vec3(0.0f, 0.0f, 1.0f));
+    }
+    else
+    {
+        ObjRotationX = 0.0f;
+        ObjRotationY = 0.0f;
+        ObjRotationZ = 0.0f;
+        model = glm::rotate(model, glm::radians((float)angle_2 * AutoRotateSpeed), vec3(0.0f, 1.0f, 0.0f));
+
+    }
+
+    setMatrices();
+    Current->render();
+}
+
+void SceneBasic_Uniform::ShowTransformWindow()
+{
+    ImGuiWindowFlags OpenFileTags = 0;
+    OpenFileTags |= ImGuiWindowFlags_NoResize;
+    OpenFileTags |= ImGuiWindowFlags_NoScrollbar;
+    //OpenFileTags |= ImGuiWindowFlags_NoCollapse;
+
+    {
+        ImGui::Begin("Transform Object", &show_transform, OpenFileTags);
+        ImGui::Text("Transform Object");
+        ImGui::SliderFloat("Left - Right", &ObjX, -10.0f, 10.0f);
+        ImGui::SameLine(); Help("X Axis");
+        ImGui::NewLine();
+
+        ImGui::SliderFloat("Down - Up", &ObjY, -10.0f, 10.0f);
+        ImGui::SameLine(); Help("Y Axis");
+        ImGui::NewLine();
+
+        ImGui::SliderFloat("Back - Front", &ObjZ, -10.0f, 10.0f);
+        ImGui::SameLine(); Help("Z Axis");
+        ImGui::NewLine();
+
+        ImGui::End();
+    }
+}
+
+void SceneBasic_Uniform::ShowScaleWindow()
+{
+    ImGuiWindowFlags OpenFileTags = 0;
+    OpenFileTags |= ImGuiWindowFlags_NoResize;
+    OpenFileTags |= ImGuiWindowFlags_NoScrollbar;
+    //OpenFileTags |= ImGuiWindowFlags_NoCollapse;
+
+    {
+        ImGui::Begin("Scale Object", &show_Scale, OpenFileTags);
+        ImGui::Text("Scale Object");
+        ImGui::SliderFloat("Size", &ObjScale, 0.2f, 10.0f);
+        ImGui::SameLine(); Help("Smaller - Bigger");
+        ImGui::NewLine();
+
+        ImGui::End();
+    }
+}
+
+void SceneBasic_Uniform::ShowRotationWindow()
+{
+    ImGuiWindowFlags OpenFileTags = 0;
+    OpenFileTags |= ImGuiWindowFlags_NoResize;
+    OpenFileTags |= ImGuiWindowFlags_NoScrollbar;
+    //OpenFileTags |= ImGuiWindowFlags_NoCollapse;
+
+    {
+        ImGui::Begin("Rotate Object", &show_Rotation, OpenFileTags);
+        ImGui::Text("Rotate Object");
+
+        ImGui::Text("X Axis Rotation");
+        ImGui::SliderAngle("X Angle", &ObjRotationX);
+        ImGui::SameLine(); if (ImGui::Button("Reset X"))
+        {
+            ObjRotationX = 0.0f;
+        }
+        ImGui::NewLine();
+
+        ImGui::Text("Y Axis Rotation");
+        ImGui::SliderAngle("Y Angle", &ObjRotationY);
+        ImGui::SameLine(); if (ImGui::Button("Reset Y"))
+        {
+            ObjRotationY = 0.0f;
+        }
+        ImGui::NewLine();
+
+        ImGui::Text("Z Axis Rotation");
+        ImGui::SliderAngle("Z Angle", &ObjRotationZ);
+        ImGui::SameLine(); if (ImGui::Button("Reset Z"))
+        {
+            ObjRotationZ = 0.0f;
+        }
+        ImGui::NewLine();
+
+        ImGui::Text("Auto Rotate Y?");
+        ImGui::Checkbox("Click!", &AutoRotate);
+        ImGui::SameLine(); //ADD SLIDER FOR SPEED HERE
+
+        ImGui::End();
+    }
+}
+
+void SceneBasic_Uniform::ShowWireframeWindow()
+{
+    ImGuiWindowFlags OpenFileTags = 0;
+    //OpenFileTags |= ImGuiWindowFlags_NoResize;
+    OpenFileTags |= ImGuiWindowFlags_NoScrollbar;
+    //OpenFileTags |= ImGuiWindowFlags_NoCollapse;
+
+    {
+        ImGui::Begin("Wireframe Options", &show_Rotation, OpenFileTags);
+        ImGui::Text("Line Settings");
+        ImGui::SliderFloat("Line Width", &ObjWFWidth, 0.20f, 2.0f);
+        if (ImGui::Button("Reset Width"))
+        {
+            ObjWFWidth = 0.75f;
+        }
+
+        ImGui::NewLine();
+        ImGui::ColorEdit3("Line Colour", (float*)&ObjWFColor);
+        if (ImGui::Button("Reset Line Colour"))
+        {
+            ObjWFColor = vec4(0.05, 0.0f, 0.05f, 1.0f);
+        }
+
+        ImGui::NewLine();
+        ImGui::ColorEdit3("Back Colour", (float*)&ObjWFBack);
+        if (ImGui::Button("Reset Back Colour"))
+        {
+            ObjWFBack = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+
+        ImGui::End();
+    }
+}
+
+void SceneBasic_Uniform::Help(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
+
+
+void SceneBasic_Uniform::WireFrame()
+{
+    Shader_WireFrame.use();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Shader_WireFrame.setUniform("Line.Width", ObjWFWidth);
+    Shader_WireFrame.setUniform("Line.Color", ObjWFColor);
+    Shader_WireFrame.setUniform("Line.BackColor", ObjWFBack);
+
+    vec3 cameraPos = vec3(0.0f);
+    cameraPos = vec3(0.0f * cos(90), 2.0f, 5.5f * sin(90));
+    view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(ObjX, ObjY, ObjZ));
+    model = glm::scale(model, vec3(ObjScale, ObjScale, ObjScale));
+
+    if (!AutoRotate)
+    {
+        model = glm::rotate(model, glm::radians(ObjRotationX * 57.5f), vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ObjRotationY * 57.5f), vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ObjRotationZ * 57.5f), vec3(0.0f, 0.0f, 1.0f));
+    }
+    else
+    {
+        ObjRotationX = 0.0f;
+        ObjRotationY = 0.0f;
+        ObjRotationZ = 0.0f;
+        model = glm::rotate(model, glm::radians((float)angle_2 * AutoRotateSpeed), vec3(0.0f, 1.0f, 0.0f));
+
+    }
+    setMatrices6();
+    Current->render();
+
+    glFinish();
+}
+
+void SceneBasic_Uniform::WireFramePre()
+{
+    Shader_WireFrame.use();
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+
+    float c = 1.5f;
+    //projection2 = glm::ortho(-0.4f * c, 0.4f * c, -0.3f * c, 0.3f * c, 1.0f, 100.0f);
+
+
+    Shader_WireFrame.setUniform("Line.Width", 0.75f);
+    Shader_WireFrame.setUniform("Line.Color", vec4(0.05, 0.0f, 0.05f, 1.0f));
+    Shader_WireFrame.setUniform("Material.Kd", 0.7f, 0.7f, 0.7f);
+    Shader_WireFrame.setUniform("Light.Position", vec4(0.0f, 0.0f, 0.0f, 1.0f));
+    Shader_WireFrame.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+    Shader_WireFrame.setUniform("Light.Intensity", 1.0f, 1.0f, 1.0f);
+    Shader_WireFrame.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
+    Shader_WireFrame.setUniform("Material.Shininess", 100.0f);
 }

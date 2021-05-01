@@ -36,6 +36,9 @@ private:
     GLSLProgram Shader_3;
     GLSLProgram Shader_4;
     GLSLProgram Shader_5;
+    
+    GLSLProgram Shader_WireFrame;
+    GLSLProgram CurrentShader;
 
     //Creating Skybox Texture & Mesh
     SkyBox sky;
@@ -48,11 +51,22 @@ private:
 
     //Values for Changing Colours.
     float Value, Value2, Value3;
-    bool show_test_window = true;
+    bool show_demo_window = true;
     bool show_another_window = false;
+    //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     //ImVec4 clear_color = ImColor(114, 144, 154);
     //vec4 clear_color = vec4(114, 144, 154, 1.0);
+
+    bool show_Open_File = false;
+    bool show_transform = false;
+    bool show_Scale = false;
+    bool show_Rotation = false;
+    bool show_Wireframe = false;
+
+    bool error_Open_File = false;
+
+    bool include_Normal = false;
 
 
     //Setting Models.
@@ -60,12 +74,22 @@ private:
     unique_ptr<ObjMesh> CarModel;               //Model Of Car - Texture
     unique_ptr<ObjMesh> CarModelNormal;         //Model Of Car - Normal Mapping
 
+    unique_ptr<ObjMesh> NewCarModelNormal;
+    unique_ptr<ObjMesh> NewCarModel;
+
+    unique_ptr<ObjMesh> Current;
+
+    glm::mat4 viewport;
+
+    bool NormalInclude = false;
+
     //Set Matricies For Each Shader.
     void setMatrices();
     void setMatrices2();
     void setMatrices3();
     void setMatrices4();
     void setMatrices5();
+    void setMatrices6();
 
     void setMatricesSky();
 
@@ -92,6 +116,22 @@ public:
     void Scenario_3();
     void Scenario_4();
     void Scenario_5();
+
+    void ShowTransformWindow();
+    void ShowScaleWindow();
+    void ShowRotationWindow();
+    void ShowWireframeWindow();
+
+    void TestWindow();
+    void Help(const char* desc);
+
+    void RenderGUI();
+    void RenderGUIChecker();
+
+    void ShowOpenFile();
+
+    void WireFramePre();
+    void WireFrame();
 };
 
 #endif // SCENEBASIC_UNIFORM_H

@@ -4,7 +4,8 @@
 #include "glutils.h"
 #include <GLFW/glfw3.h>
 #include "../imGUI/imgui.h"
-#include "../imGUI/imgui_impl_glfw_gl3.h"
+#include "../imGUI/imgui_impl_opengl3.h"
+#include "../imGUI/imgui_impl_glfw.h"
 //#include "../gl3w/gl3w.h"
 #include <stdio.h>
 //#include "../gl3w/glcorearb.h"
@@ -67,8 +68,11 @@ public:
 
         GLUtils::dumpGLInfo();
 
-        ImGui_ImplGlfwGL3_Init(window, true);
-        
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        ImGui::StyleColorsDark();
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 130");
 
         // Initialization
         glClearColor(0.5f,0.5f,0.5f,1.0f);
@@ -189,6 +193,5 @@ private:
 
             glfwSwapBuffers(window);
         }
-        ImGui_ImplGlfwGL3_Shutdown();
     }
 };
