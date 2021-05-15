@@ -15,68 +15,7 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-//Global Camera Position
-vec3 GlobalCam = vec3(0.0f * cos(90), 2.0f, 5.5f * sin(90));
-float GlobalCamPosX = 0.0f;
-float GlobalCamPosY = 2.0f;
-float GlobalCamPosZ = 5.5f;
-float GlobalLightPosX = 5.0f;
-float GlobalLightPosY = 1.5f;
-float GlobalLightPosZ = 7.5f;
-
-//Used for Switching Scenes/Toggles./-
-int OverallLoad = 1;
-bool Scene1Toggle = true;
-bool Scene4Toggle = false;
-
-//Objects Position
-float ObjX = 0.0f;
-float ObjY = 0.0f;
-float ObjZ = 0.0f;
-
-float ObjTransform[3] = { 0.0f, 0.0f, 0.0f };
-vec3 ObjTransformVec;
-
-//Objects Scale
-float ObjScale = 0.8f;
-
-//Objects Rotation
-float ObjRotationX = 0.0f;
-float ObjRotationY = 0.0f;
-float ObjRotationZ = 0.0f;
-bool AutoRotate = false;
-float AutoRotateSpeed = 8.0f;
-
-//Objects Wire Frame
-float ObjWFWidth = 0.75f;
-vec4 ObjWFColor = vec4(0.05, 0.0f, 0.05f, 1.0f);
-vec4 ObjWFBack = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-//Objects Silhouette
-float Sil_EdgeWidth = 0.004f;
-float Sil_PctExtend = 0.0;
-vec4 Sil_LineColor = vec4(0.05f, 0.0f, 0.05f, 1.0f);
-
-//Clouds Colours
-vec4 Clouds_Sky = vec4(0.1, 0.3, 0.9, 1.0);
-vec4 Clouds_Cloud = vec4(1.0, 1.0, 1.0, 1.0);
-
-//Wood Colours
-vec4 DarkWoodColor = vec4(0.8, 0.5, 0.1, 1.0);
-vec4 LightWoodColor = vec4(1.0, 0.75, 0.25, 1.0);
-
-
-//Mix1 Settings
-float Mix1EW = 0.004f;
-float Mix1PE = 0.00f;
-vec3 Mix1Color = vec3(1.0f);
-int Mix1Levels = 10;
-
-float LightAngle = 1.0f;
-float CamAngle = 90;
-
-//Setting Components Used Throughout Project
-SceneBasic_Uniform::SceneBasic_Uniform() : plane(20.0f, 20.0f, 2, 2), angle_2(0.0f), angle_1(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f), sky(100.0f), Current(), CarModel(), CarModelNormal(),
+SceneBasic_Uniform::SceneBasic_Uniform() : plane(20.0f, 20.0f, 2, 2), angle_1(0.0f), sky(100.0f), Current(),
 time(0), deltaT(0), torus(0.7f * 0.1f, 0.3f * 0.1f, 20, 20), Mix2_nParticles(100), Mix2_particleLifetime(10.5f), Mix2_drawBuf(1), Mix2_emitterPos(0.0f, -1.0f, 0.0f), Mix2_emitterDir(0, 1, 0)
 {
 
@@ -88,9 +27,7 @@ void SceneBasic_Uniform::initScene()
     compile();                                                                              //Compile all shaders.
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-
-    //projection = mat4(1.0f);                                                                //Default Projection Mat
-    angle_2 = glm::radians(90.0f);                                                          //Defualting Angle to Start Rotation of Camera.
+                                                          //Defualting Angle to Start Rotation of Camera.
 
 
     GLuint cubeTex = Texture::loadCubeMap("media/texture/cube/Skybox/skybox2");
@@ -146,9 +83,9 @@ void SceneBasic_Uniform::compile()
 
     //SkyBox Shader
     try {
-        SkyBox.compileShader("shader/SkyBox.vert");
-        SkyBox.compileShader("shader/SkyBox.frag");
-        SkyBox.link();
+        Shader_SkyBox.compileShader("shader/SkyBox.vert");
+        Shader_SkyBox.compileShader("shader/SkyBox.frag");
+        Shader_SkyBox.link();
     }
     catch (GLSLProgramException& e)
     {
@@ -251,40 +188,11 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update(float t)
 {
-    //Angle 1 Rotation, for scene 1 Lighting.
     if (m_animate) {
         angle_1 += 0.05f;
         if (angle_1 >= 360.0f)
             angle_1 -= 360.0f;
     }
-
-    //SkyBox Rotation
-    float deltaT2 = t - tPrev;
-    if (tPrev == 0.0f)
-    {
-        deltaT2 = 0.0f;
-    }
-
-    tPrev = t;
-    angle_2 += rotSpeed * deltaT2;
-
-    if (angle_2 > glm::two_pi<float>())
-    {
-        angle_2 -= glm::two_pi<float>();
-    }
-
-    //Rotation for Light Moving.
-    if (m_animate) {
-        angle_3 += 0.015f;
-        if (angle_3 >= 360.0f)
-            angle_3 -= 360.0f;
-    }
-
-    //Used to change the colour. (Each offset to mix it up)
-    float timeValue = t;
-    Value = sin(timeValue) / 4.0f + 0.5f;
-    Value2 = sin(timeValue) / 4.0f + 0.25f;
-    Value3 = sin(timeValue) / 4.0f + 0.75f;
 
     deltaT = t - time;
     time = t;
@@ -364,16 +272,21 @@ void SceneBasic_Uniform::render()
     //Camera + Lights
 
 
-   // if (show_CamPos) { ShowCamPosWindow(); };
     if (show_LightPos) { ShowLightPosWindow(); };
 
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
+void SceneBasic_Uniform::RenderSkyBox()
+{
+    model = mat4(1.0f);
 
+    setMatrices(Shader_SkyBox);
+    sky.render();
+}
 
-void SceneBasic_Uniform::setMatrices6(GLSLProgram &prog)
+void SceneBasic_Uniform::setMatrices(GLSLProgram &prog)
 {
     mat4 mv = view * model;
 
@@ -384,15 +297,6 @@ void SceneBasic_Uniform::setMatrices6(GLSLProgram &prog)
     prog.setUniform("ShadowMatrix", Mix2_lightPV * model);
     prog.setUniform("MVP", projection * mv);
     prog.setUniform("ViewportMatrix", viewport);
-}
-
-void SceneBasic_Uniform::setMatricesSky()
-{
-    mat4 mv = view * model;
-
-    SkyBox.setUniform("ModelViewMatrix", mv);
-    SkyBox.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
-    SkyBox.setUniform("MVP", projection * mv);
 }
 
 void SceneBasic_Uniform::resize(int w, int h)
@@ -408,47 +312,6 @@ void SceneBasic_Uniform::resize(int w, int h)
         vec4(0.0f, h2, 0.0f, 0.0f),
         vec4(0.0f, 0.0f, 1.0f, 0.0f),
         vec4(w2 + 0, h2 + 0, 0.0f, 1.0f));
-}
-
-void  SceneBasic_Uniform::InputPressed(int num)
-{
-    //Checks for input Pressed, If below 7, its changing scenes!
-    if (num < 7)
-    {
-        OverallLoad = num;
-    }
-    
-    //Scene 1 & 4 Camera Movement/Fog Toggle
-    if (OverallLoad == 1 && num == 10)
-    {
-        Scene1Toggle = false;
-    }
-    else if (OverallLoad == 4 && num == 10)
-    {
-        Scene4Toggle = false;
-    }
-
-    if (OverallLoad == 1 && num == 11)
-    {
-        Scene1Toggle = true;
-    }
-    else if (OverallLoad == 4 && num == 11)
-    {
-        Scene4Toggle = true;
-    }
-}
-
-
-void SceneBasic_Uniform::RenderSkyBox()
-{
-    //Set Skybox to Current.
-    SkyBox.use();
-
-    model = mat4(1.0f);
-
-    //Render Skybox.
-    setMatrices6(SkyBox);
-    sky.render();
 }
 
 void SceneBasic_Uniform::GUIMenuRender()
@@ -711,7 +574,7 @@ void SceneBasic_Uniform::GeneralRender(GLSLProgram &prog)
         model = glm::rotate(model, glm::radians((float)angle_1 * AutoRotateSpeed), vec3(0.0f, 1.0f, 0.0f));
 
     }
-    setMatrices6(prog);
+    setMatrices(prog);
     Current->render();
 
     glFinish();
@@ -769,16 +632,6 @@ void SceneBasic_Uniform::Mix1_render()
     Mix1_pass2();
     glFlush();
     Mix1_pass3();
-    
-    //if (Mix1_bool == true)
-    //{
-    //    Mix1_bool = false;
-    //    ObjX = 0.275;
-    //    ObjY = 0.824;
-    //    ObjZ = 0.667;
-
-    //    ObjRotationY = 185;
-    //}
 }
 void SceneBasic_Uniform::Mix1_setUpFBO()
 {
@@ -877,7 +730,7 @@ void SceneBasic_Uniform::Mix1_pass3()
     model = mat4(1.0f);
     projection = model;
     view = model;
-    setMatrices6(Shader_Mix1_Comp);
+    setMatrices(Shader_Mix1_Comp);
 
     glBindVertexArray(fsQuad);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -933,7 +786,7 @@ void SceneBasic_Uniform::Mix1_drawscene(GLSLProgram& prog, bool onlyShadowCaster
 
     }
     model = glm::scale(model, vec3(ObjScale));
-    setMatrices6(prog);
+    setMatrices(prog);
     Current->render();
 
     if (!onlyShadowCasters) {
@@ -952,18 +805,18 @@ void SceneBasic_Uniform::Mix1_drawscene(GLSLProgram& prog, bool onlyShadowCaster
 
         model = mat4(1.0f);
         model = glm::translate(model, vec3(0.0f, -0.169f, 0.0f));
-        setMatrices6(prog);
+        setMatrices(prog);
         Mix1_Plane->render();
         model = mat4(1.0f);
         model = glm::translate(model, vec3(-3.25f, 5.0f, 0.0f));
         model = glm::rotate(model, glm::radians(90.0f), vec3(1, 0, 0));
         model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 0.0f, 1.0f));
-        setMatrices6(prog);
+        setMatrices(prog);
         Mix1_Plane->render();
         model = mat4(1.0f);
         model = glm::translate(model, vec3(0.0f, 5.0f, -5.0f));
         model = glm::rotate(model, glm::radians(90.0f), vec3(1.0f, 0.0f, 0.0f));
-        setMatrices6(prog);
+        setMatrices(prog);
         Mix1_Plane->render();
         model = mat4(1.0f);
     }
@@ -1090,7 +943,7 @@ void SceneBasic_Uniform::Mix2_draw()
     Shader_Mix2.setUniform("Material.Ka", 0.05f, 0.05f, 0.05f);
     Shader_Mix2.setUniform("Material.Shininess", 1.0f);
     model = mat4(1.0f);
-    setMatrices6(Shader_Mix2);
+    setMatrices(Shader_Mix2);
     plane.render();
 }
 void SceneBasic_Uniform::Mix2_setUpFBO()
@@ -1343,7 +1196,7 @@ void SceneBasic_Uniform::Mix2_particleRender(GLSLProgram& prog)
     prog.setUniform("Material.Shininess", 100.0f);
     model = mat4(1.0f);
     model = glm::translate(model, vec3(0.0f, 1.0f, 0.0f));
-    setMatrices6(Shader_Mix2);
+    setMatrices(Shader_Mix2);
 
     glBindVertexArray(Mix2_particleArray[Mix2_drawBuf]);
     glEnableVertexAttribArray(0);
@@ -1391,16 +1244,6 @@ void SceneBasic_Uniform::ShowMix2Window()
 
         ImGui::End();
     }
-}
-
-//Shadow Volume Infomation
-void SceneBasic_Uniform::Shadow_init()
-{
-
-}
-void SceneBasic_Uniform::Shadow_render()
-{
-
 }
 
 //Wireframe Infomation
@@ -1561,7 +1404,7 @@ void SceneBasic_Uniform::Cloud_render()
     model = glm::translate(model, vec3(0.0, -0.2f, -5.0f));
     model = glm::rotate(model, glm::radians((float)-25), vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, vec3(12.0));
-    setMatrices6(Shader_Clouds);
+    setMatrices(Shader_Clouds);
 
     glBindVertexArray(quad);
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -1648,7 +1491,7 @@ void SceneBasic_Uniform::Wood_render()
     model = glm::translate(model, vec3(0.0, -0.2f, -5.0f));
     model = glm::rotate(model, glm::radians((float)-25), vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, vec3(12.0));
-    setMatrices6(Shader_Wood);
+    setMatrices(Shader_Wood);
 
     glBindVertexArray(quad);
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -1866,7 +1709,7 @@ void SceneBasic_Uniform::NightVision_pass2()
     model = mat4(1.0f);
     view = mat4(1.0f);
     projection = mat4(1.0f);
-    setMatrices6(Shader_NightVision);
+    setMatrices(Shader_NightVision);
 
     // Render the full-screen quad
     glBindVertexArray(NVQuad);
@@ -1972,7 +1815,7 @@ void SceneBasic_Uniform::Gaussin_pass2()
     model = mat4(1.0f);
     view = mat4(1.0f);
     projection = mat4(1.0f);
-    setMatrices6(Shader_Gaussin);
+    setMatrices(Shader_Gaussin);
 
     glBindVertexArray(GQuad);
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -1990,7 +1833,7 @@ void SceneBasic_Uniform::Gaussin_pass3()
     model = mat4(1.0f);
     view = mat4(1.0f);
     projection = mat4(1.0f);
-    setMatrices6(Shader_Gaussin);
+    setMatrices(Shader_Gaussin);
 
     glBindVertexArray(GQuad);
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -2167,7 +2010,7 @@ void SceneBasic_Uniform::EdgeDetection_pass2()
     model = mat4(1.0f);
     view = mat4(1.0f);
     projection = mat4(1.0f);
-    setMatrices6(Shader_EdgeDetection);
+    setMatrices(Shader_EdgeDetection);
 
     glBindVertexArray(EDquad);
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -2366,7 +2209,7 @@ void SceneBasic_Uniform::ParticleEffects_render()
     view = glm::lookAt(CameraPos, vec3(0.0f, 1.5f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     model = mat4(1.0f);
     model = glm::translate(model, vec3(SmokeFireTrans[0], SmokeFireTrans[1], SmokeFireTrans[2]));
-    setMatrices6(Shader_SmokEffect);
+    setMatrices(Shader_SmokEffect);
 
     glDepthMask(GL_FALSE);
     glBindVertexArray(PEparticleArray[PEdrawBuf]);
@@ -2450,7 +2293,7 @@ void SceneBasic_Uniform::CustomParticle_render()
 
     model = mat4(1.0f);
     model = glm::scale(model, vec3(0.1f));
-    setMatrices6(Shader_CustomParticle);
+    setMatrices(Shader_CustomParticle);
 
     glBindVertexArray(CPparticleArray[CPdrawBuf]);
     glEnableVertexAttribArray(0);

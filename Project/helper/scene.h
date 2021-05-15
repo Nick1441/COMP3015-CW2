@@ -29,7 +29,6 @@ public:
       to update your animation.
       */
     virtual void update( float t ) = 0;
-    virtual void InputPressed(int num) = 0;
     /**
       Draw your scene.
       */
