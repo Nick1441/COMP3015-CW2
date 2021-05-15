@@ -73,39 +73,48 @@ private:
 
 
     //  --- General ---
-    vec3 CameraPos;                         //Camera Pos Used throughout so will remain constant.
+   
+    float angle_1;                          //Used for Rotation throughout.vec3 CameraPos;                         //Camera Pos Used throughout so will remain constant.
     vec4 lightPos;                          //Light Pos used throughout so will remain constant.
-    float angle_1;                          //Used for Rotation throughout.
     bool AdjLoaded = true;                  //When loading objects, to see what Load type is current
-    string ObjLocation;
-    string TextureLocation;
-    unique_ptr<ObjMesh> Current;
-    string CurrentTex;
-    GLuint CurrentTextureGL;
-    bool Light_AutoRotate = false;
-    float LRF = 0;
-    mat4 viewport;
-    float ObjTransform[3] = { 0.0f, 0.0f, 0.0f };
-    vec3 ObjTransformVec;
-    float ObjScale = 0.8f;
-    float ObjRotationX = 0.0f;
+    
+    string ObjLocation;                     //Stores the Currenlty Loaded Obj Name  
+    string TextureLocation;                 //Stores the Currently loaded Texture Name
+    unique_ptr<ObjMesh> Current;            //Current Object laoded. Used throughout.
+    GLuint CurrentTextureGL;            
+            
+    float LRF = 0;                          //Time for Auto Rotate
+    bool Light_AutoRotate = false;          //Bool for auto rotate, used throughout.
+    float ObjTransform[3] = { 0.0f, 0.0f, 0.0f };   //Easier to have this for GUI then set to vec
+    
+    mat4 viewport;                          //Used for Shader.
+
+    vec3 ObjTransformVec;                   //Vector for Objects Transform.
+    float ObjScale = 0.8f;                  //Obj Scale, Used throghout.
+    float ObjRotationX = 0.0f;              //Rotation, Could have used [3] like transform.
     float ObjRotationY = 0.0f;
     float ObjRotationZ = 0.0f;
-    bool AutoRotate = false;
+
+    bool AutoRotate = false;                //Objects Auto Rotate Feature
     float AutoRotateSpeed = 8.0f;
-    float LightAngle = 1.0f;
-    float CamAngle = 90;
+
+    vec3 CameraPos;                         //Camera Pos, Used throughout so all shaders are same view.
+    float LightAngle = 1.0f;                //Light Angle, Changed through GUI
+    
 
     //  --- Mix 1 - Shadow Volumes + Silhouette ---
     GLuint SSBackground;                    //Texture Background for .Obj
     GLuint colorDepthFBO, fsQuad;           //FBO for Mix1
-    bool toonShadingActive = true;
-    int ToonOrNot;
-    unique_ptr<ObjMesh> Mix1_Plane;
-    float Mix1EW = 0.004f;
+    
+    int ToonOrNot;                          //Used for Changing to Toon inside Frag.
+    bool toonShadingActive = true;          //Bool which can be checked for Toon.
+    
+    unique_ptr<ObjMesh> Mix1_Plane;         //Shadows Render on .Obj not Planes, So Upgraded plane.
+    
+    int Mix1Levels = 10;                    //Custom Variables for real time render changes.
     float Mix1PE = 0.00f;
+    float Mix1EW = 0.004f;
     vec3 Mix1Color = vec3(1.0f);
-    int Mix1Levels = 10;
 
     //  --- Mix 2 - Shadow Soft Edges + Particle Systems ---
     int Mix2NewPLife = 8;                   //Variables for Setting new Variables in GUI
@@ -143,18 +152,36 @@ private:
     GLuint Mix2_rotation[2];
     GLuint Mix2_particleArray[2];           //Holds Particles Info
 
-    GLuint Mix2_feedback[2];
     vec3 Mix2_emitterPos;                   //Pos/Direction of Oragin of System.
     vec3 Mix2_emitterDir;
+    GLuint Mix2_feedback[2];
 
-    int Mix2_nParticles;
+    int Mix2_nParticles;                    //Particle amount/Lifetime!
     float Mix2_particleLifetime;
 
+    //  --- Smoke Particle Effects ---
+    Random rand;                            //Uses Random for ...well... randomnes....
+    bool SmokeFireTransform = false;        //Enables transform for Particle Effect
+    glm::vec3 PEemitterPos, PEemitterDir;
 
-    // WIRE FRAME
-    float ObjWFWidth = 0.75f;
-    vec4 ObjWFColor = vec4(0.05, 0.0f, 0.05f, 1.0f);
+    GLuint PEposBuf[2], PEvelBuf[2], PEage[2];  //Feedback for Particle Effects
+    GLuint PEparticleArray[2];
+    GLuint PEfeedback[2];
+    GLuint PEdrawBuf;
+
+    int PEnParticles;                           //Particle Amount, Can be changed in GUI
+    float PEparticleLifetime;                   //Particle Lifetime, Can be changed in GUI
+
+    float SmokeFireTrans[3] = { -1.0f, -1.5f, -3.0f };  //Default Transform for Particles.
+    float smokeLeft = -2.0f;                    //Left Width of Effect, Can be changed!
+    float smokeRight = 2.0f;                    //Right Width of Effect, Can be Changed!
+    bool FireOrSmoke = true;                    //Setting it as fire or smoke!
+
+    //  --- Wire Frame ---
+    float ObjWFWidth = 0.75f;                      //Variables for Customising Shader.   
     vec4 ObjWFBack = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    vec4 ObjWFColor = vec4(0.05, 0.0f, 0.05f, 1.0f);
+
 
     //  --- Silhouette ---
     int Sil_Levels = 10;                    //Setting Default Levels for Toon
@@ -163,86 +190,54 @@ private:
     float Sil_PctExtend = 0.0;
     vec4 Sil_LineColor = vec4(0.05f, 0.0f, 0.05f, 1.0f);
 
-
     //  --- SkyBox ---
-    SkyBox sky;
-    
+    SkyBox sky;                             //Setting SkyBox... All is required..
 
-
-   
     //  --- Gaussin ---
-    float GaussingBlurAmount = 10.0f;
+    float GaussingBlurAmount = 10.0f;       //Blur amount for Gaussin!
+    GLuint GrenderFBO, GIntermediateFBO;    //FBO's for Rendering   
+    GLuint GrenderTex, GIntermediateTex;
+    GLuint GQuad;                           //Quad to render to!
 
+    //  --- File Loading ---
+    char fileInput[64];                     //Objects File Name From GUI
+    char fileInputTex[64];                  //Textures File Name From GUI
+    bool NewFileLoad = false;               //Updates Info when a new file is added.
 
-    //Loading iN Objects
-    char fileInput[64];
-    char fileInputTex[64];
-    bool NewFileLoad = false;
-
-    //CLOUD
-    GLuint quad;
-    vec4 Clouds_Sky = vec4(0.1, 0.3, 0.9, 1.0);
+    //  --- Cloud Background ---
+    GLuint quad;                                    //Quad for Rendering on!
+    vec4 Clouds_Sky = vec4(0.1, 0.3, 0.9, 1.0);     //Colours for changing background!
     vec4 Clouds_Cloud = vec4(1.0, 1.0, 1.0, 1.0);
 
-    //WOOD
-    vec4 DarkWoodColor = vec4(0.8, 0.5, 0.1, 1.0);
+    //  --- Wood Effect Background ---
+    vec4 DarkWoodColor = vec4(0.8, 0.5, 0.1, 1.0);  //Colours for changing background!
     vec4 LightWoodColor = vec4(1.0, 0.75, 0.25, 1.0);
 
-
-   //SMOKE EFFECTS
-    bool SmokeFireTransform = false;
-
-    //GAUSSIN
-
-    GLuint GrenderFBO, GIntermediateFBO;
-    GLuint GrenderTex, GIntermediateTex;
-    GLuint GQuad;
-
-
-    //NIGHT VISION
-    GLuint NVrenderFBO;
-    GLuint NVrenderTex;
+    //  --- Night Vision ---        
+    GLuint NVrenderFBO;                     //FBO's for Render
+    GLuint NVrenderTex;                     //GLuints for Noise Texture
     GLuint NVnoiseTex;
-    GLuint NVpass1Index, NVpass2Index, NVQuad;
+    GLuint NVpass1Index, NVpass2Index, NVQuad;  //For index passing sub routines.
 
-    //EDGE DETECTION
-    GLuint EDquad;
+    //  --- Edge Detection ---
+    GLuint EDquad;                          //FBO's Texture and handles for Detection.
     GLuint EDfboHandle;
     GLuint EDrenderTex;
 
-    //CUSTOM PARTICLES
-    glm::vec3 CPemitterPos, CPemitterDir;
+    //  --- Custom Object Particle System
+    vec3 CPemitterPos;                      //Direction and Pos of Emmiter.
+    vec3 CPemitterDir;
 
-    GLuint CPposBuf[2], CPvelBuf[2], CPage[2], CProtation[2];
-
-    GLuint CPparticleArray[2];
     GLuint CPfeedback[2];
-
-    int CPnParticles;
+    GLuint CPparticleArray[2];
+    GLuint CPposBuf[2], CPvelBuf[2], CPage[2], CProtation[2];   //Feedback for Particles.
+    
+    int CPdrawBuf;                          //Draw Buffer for Particle Effects
+    int CPnParticles;                       //Particle Amount & Lifetime.
     float CPparticleLifetime;
-    int CPdrawBuf;
 
-    //SMOKE FIRE PE
-    Random rand;
-
-    glm::vec3 PEemitterPos, PEemitterDir;
-
-    GLuint PEposBuf[2], PEvelBuf[2], PEage[2];
-
-    GLuint PEparticleArray[2];
-
-    GLuint PEfeedback[2];
-
-    GLuint PEdrawBuf;
-
-    int PEnParticles;
-    float PEparticleLifetime;
-    float SmokeFireTrans[3] = { -1.0f, -1.5f, -3.0f };
-    float smokeLeft = -2.0f;
-    float smokeRight = 2.0f;
-    bool FireOrSmoke = true;
-
-    void setMatrices(GLSLProgram& prog);
+    //  --- Basic SceneBasic Info ---
+    void setMatrices(GLSLProgram& prog);    
     void compile();
 
 public:
@@ -272,6 +267,7 @@ public:
     void ShowWireframeWindow();
     void ShowSmokeFireWindow();
     void ShowSilhouetteWindow();
+    void showCustomPrticleWindow();
 
     //  --- General Render ---              //Used for multiple uses of same rendering.
     void GeneralRender(GLSLProgram& prog);
