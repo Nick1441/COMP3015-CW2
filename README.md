@@ -6,7 +6,7 @@ This project was created using Visual Studio
 This Aim *Trainer* is perfect for practising  your aim and reflexes! Within the given 60 Seconds, try to score as many targets as possible! Quick reactions are key here, as the target will move & Scale with each hit! Accuracy also plays a key part in this, as each target can score between 1 & 3 points each, depending on how close you get to the target! With a Calm and warm environment, the game uses multiple features, such as **Shading on the Environment** , **Custom Objects** & **Animations!**
 
 <p align="center">
-    <img src="./READMEItemss/Silhouette.png" width="180" height="120" />
+    <img src="./READMEItems/Silhouette.png" width="180" height="120" />
     <img src="./READMEItems/Mix2.png" width="180" height="120" />
     <img src="./READMEItems/Wireframe.png" width="180" height="120" />
 </p>
