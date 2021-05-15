@@ -3,16 +3,19 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
+//Outputs to frag
 out vec3 GNormal;
 out vec3 GPosition;
 
 noperspective out vec3 GEdgeDistance;
 
+//in from Vert
 in vec3 VNormal[];
 in vec3 VPosition[];
 
 uniform mat4 ViewportMatrix;
 
+//Emmiting Vertex if on edge of Line.
 void main()
 {
 	vec2 p0 = vec2(ViewportMatrix * (gl_in[0].gl_Position / gl_in[0].gl_Position.w));

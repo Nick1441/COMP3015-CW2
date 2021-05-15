@@ -1,16 +1,17 @@
 #version 460
 
+//In Variables.
 in vec3 fPosition;
 in vec3 fNormal;
 in vec2 TexCoord;	
 
 layout (location = 0) out vec4 FragColor;
 
-//layout (binding = 15) uniform sampler2D Tex1;
-
+//For Toon Shading. This does not change.
 const int levels = 20;
 const float scaleFactor = 1.0 / levels;
 
+//Ligh and material Structs. Basic.
 uniform struct LightInfo 
 {
   vec4 Position;
@@ -26,7 +27,7 @@ uniform struct MaterialInfo
   float Shininess;
 } Material;
 
-
+//Toon shade Calcultes colour and outputs as frag colour.
 vec3 ToonShade()
 {
 	vec3 s = normalize(Light.Position.xyz - fPosition.xyz);

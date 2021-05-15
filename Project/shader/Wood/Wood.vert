@@ -1,5 +1,9 @@
 #version 460
 
+//
+//	--- Almost Duplication of Geom for use in Clouds, See that file for comments, Saved Duplication.
+//
+
 layout (location = 0) in vec3 VertexPosition;
 layout (location = 2) in vec2 VertexTexCoord;
 

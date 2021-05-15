@@ -1,4 +1,9 @@
 #version 460
+
+//
+//	--- Duplication of Geom for use in Mix1, See that file for comments, Saved Duplication.
+//
+
 struct LightInfo
 {
 	vec4 Position;
@@ -35,29 +40,6 @@ vec3 ToonShade()
 	return Light.Intensity * (ambient + diffuse);
 }
 
-//CAN BE USED IN THE MIDDLE INSTEAD?
-// vec3 PhongModel(vec3 Position, vec3 n)
-// {
-//	//Ambient
-//	vec3 ambient = Material.Ka;
-//
-//	//Diffuse
-//	vec3 s = normalize(vec3(Light.Position.xyz - Position));
-//	float sDotN = max( dot(s,n), 0.0 );
-//	vec3 diffuse = Material.Kd * sDotN;
-//	
-//	//Specular
-//	vec3 specular = vec3(0.0);
-//
-//	if (sDotN > 0.0)
-//	{
-//		vec3 v = normalize(-Position.xyz);
-//		vec3 r = reflect(-s, n);
-//		specular = Material.Ks * pow(max(dot(r, v), 0.0), Material.Shininess);
-//	}
-//
-//	return ambient + (diffuse + specular);
-// }
 
 void main()
 {

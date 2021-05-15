@@ -1,4 +1,6 @@
 #version 460
+
+//Structs for Light + Materials
 struct LightInfo
 {
 	vec4 Position;
@@ -15,6 +17,7 @@ struct MaterialInfo
 };
 uniform MaterialInfo Material;
 
+//Struct for Line info
 uniform struct LineInfo
 {
 	float Width;
@@ -22,13 +25,16 @@ uniform struct LineInfo
 	vec4 BackColor;
 } Line;
 
+//from Geom
 in vec3 GPosition;
 in vec3 GNormal;
+
 noperspective in vec3 GEdgeDistance;
 
 layout(location = 0) out vec4 FragColor;
 
- vec3 PhongModel(vec3 Position, vec3 n)
+//Calcuating Light etc for Sides/Lines
+ vec3 BlinnPhongModel(vec3 Position, vec3 n)
  {
 	//Ambient
 	vec3 ambient = Material.Ka * Light.Intensity;
@@ -56,7 +62,7 @@ void main()
 	bool Test = false;
 	bool Test2 = false;
 
-	vec4 color = vec4(PhongModel(GPosition, GNormal), 1.0);
+	vec4 color = vec4(BlinnPhongModel(GPosition, GNormal), 1.0);
 	vec4 NewColour;
 
 	float d = min(GEdgeDistance.x, GEdgeDistance.y);
@@ -78,6 +84,7 @@ void main()
 		MixVal = exp2(-2.0 * (x*x));
 	}
 
+	//Calculating Line if edge or not
 	if (Test == true)
 	{
 		FragColor = mix(color * Line.BackColor, Line.Color, MixVal);
@@ -87,5 +94,4 @@ void main()
 		FragColor = mix(color, Line.Color, MixVal);
 	}
 
-	//FragColor = mix(color, Line.Color, MixVal);
 }

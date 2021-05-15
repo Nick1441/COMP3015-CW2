@@ -1,5 +1,9 @@
 #version 460
 
+//
+//  --- Same As Custom Edge Particles -- Comments are not required as duplication.
+//
+
 const float PI = 3.1415926359;
 
 uniform int Pass;

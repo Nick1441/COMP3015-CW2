@@ -1,31 +1,37 @@
 #version 460
 
+//Input from Geom
 in vec3 GPosition;
 in vec3 GNormal;
 in vec2 GTexCoord;
 
+//Input unifroms
 uniform vec4 LightPosition;
 uniform vec3 LightIntensity;
 
+//Input textures from cpp
 uniform sampler2D Tex;
 uniform sampler2D Tex2;
 
-uniform vec3 Kd;            // Diffuse reflectivity
-uniform vec3 Ka;            // Ambient reflectivity
-uniform vec3 Ks;            // Specular reflectivity
-uniform float Shininess;    // Specular shininess factor
+//Material Struct but not as a struct
+uniform vec3 Kd;
+uniform vec3 Ka;
+uniform vec3 Ks;
+uniform float Shininess;
 
 uniform int RenderType;
 
 layout( location = 0 ) out vec4 Ambient;
 layout( location = 1 ) out vec4 DiffSpec;
 
+//int fro Normal Render or Silhouette
 uniform int Type;
 
+//Levels as uniform as can be changed.
 uniform int levels;
-//const int levels = 3;
 const float scaleFactor = 1.0 / levels;
 
+//Calcuating shadee
 void shade( )
 {
     vec3 s = normalize( vec3(LightPosition) - GPosition );
@@ -49,6 +55,7 @@ void shade( )
           1.0 );
 }
 
+//Calculating Toon Shade
 void ToonShade()
 {
 	vec3 s = normalize(LightPosition.xyz - GPosition.xyz);
@@ -58,7 +65,7 @@ void ToonShade()
 }
 
 void main() {
-    //shade();
+    //Render type is for either toon shading, or normal blinnphong.
     if (RenderType == 1)
     {
         ToonShade();
@@ -67,19 +74,4 @@ void main() {
     {
         shade();    
     }
-
-
-
-    //ToonShade();
-
-//    do if statment for is Edge??
-//
-//    	if (GIsEdge == 1)
-//	{
-//		FragColor = LineColor;
-//	}
-//	else
-//	{
-//		FragColor = vec4(ToonShade(), 1.0);
-//	}
 }

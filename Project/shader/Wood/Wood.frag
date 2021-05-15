@@ -1,5 +1,9 @@
 #version 460
 
+//
+//	--- Almost Duplication of Geom for use in Clouds, See that file for comments, Saved Duplication.
+//
+
 uniform sampler2D NoiseTex;
 
 uniform vec4 DarkWoodColor = vec4( 0.8, 0.5, 0.1, 1.0 );

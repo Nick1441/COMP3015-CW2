@@ -28,23 +28,8 @@
     <Filter Include="helper\stb">
       <UniqueIdentifier>{4cdcf606-56e5-49a6-9e23-5c61a5a98c8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shaders\Scenario3">
-      <UniqueIdentifier>{b2ab3def-c72a-4535-880e-73c0d26f9e37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\Scenario1">
-      <UniqueIdentifier>{7164138e-f139-4cd1-a6a6-2459a5895b33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\Scenario2">
-      <UniqueIdentifier>{6c1c4d08-1541-4ce6-827c-63322bcbe18e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\Scenario4">
-      <UniqueIdentifier>{bb95eca7-3f58-4dba-93b5-b2e747508d2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shaders\Skybox">
       <UniqueIdentifier>{07b3eac6-79e5-4901-b10b-88b0545aa723}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\Scenario5">
-      <UniqueIdentifier>{94927318-f40e-4893-80ad-8fbade7396cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="ImGui3">
       <UniqueIdentifier>{160322e9-4a3d-4236-9a4d-8f66ed1ac26e}</UniqueIdentifier>
@@ -55,9 +40,6 @@
     <Filter Include="helper\stb\NewItems">
       <UniqueIdentifier>{d8f15a19-813c-4e9d-8feb-177a66b4031d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="irrKlang">
-      <UniqueIdentifier>{d041038f-ab8e-4444-9ecc-6bfe9d91cd62}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shaders\WireFrame">
       <UniqueIdentifier>{c08dbdb9-2c1c-44c5-9313-5b04e655210a}</UniqueIdentifier>
     </Filter>
@@ -66,9 +48,6 @@
     </Filter>
     <Filter Include="shaders\Clouds">
       <UniqueIdentifier>{2291cb2b-29da-405e-8c76-f1a2ea6c1a87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\Wood">
-      <UniqueIdentifier>{60297c66-9566-4582-9b03-10f9de1d92a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="shaders\ShadowSilhouette">
       <UniqueIdentifier>{154a3e08-5795-4891-bf54-bc1369dff713}</UniqueIdentifier>
@@ -90,6 +69,9 @@
     </Filter>
     <Filter Include="shaders\Custom Particle Effects">
       <UniqueIdentifier>{3b4cf728-b379-4258-b45d-bf7a6cc16298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Wood">
+      <UniqueIdentifier>{60297c66-9566-4582-9b03-10f9de1d92a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -256,41 +238,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\Scenario3.frag">
-      <Filter>shaders\Scenario3</Filter>
-    </None>
-    <None Include="shader\Scenario3.vert">
-      <Filter>shaders\Scenario3</Filter>
-    </None>
-    <None Include="shader\Scenario1.frag">
-      <Filter>shaders\Scenario1</Filter>
-    </None>
-    <None Include="shader\Scenario1.vert">
-      <Filter>shaders\Scenario1</Filter>
-    </None>
-    <None Include="shader\Scenario2.frag">
-      <Filter>shaders\Scenario2</Filter>
-    </None>
-    <None Include="shader\Scenario2.vert">
-      <Filter>shaders\Scenario2</Filter>
-    </None>
-    <None Include="shader\Scenario4.frag">
-      <Filter>shaders\Scenario4</Filter>
-    </None>
-    <None Include="shader\Scenario4.vert">
-      <Filter>shaders\Scenario4</Filter>
-    </None>
     <None Include="shader\SkyBox.frag">
       <Filter>shaders\Skybox</Filter>
     </None>
     <None Include="shader\SkyBox.vert">
       <Filter>shaders\Skybox</Filter>
-    </None>
-    <None Include="shader\Scenario5.frag">
-      <Filter>shaders\Scenario5</Filter>
-    </None>
-    <None Include="shader\Scenario5.vert">
-      <Filter>shaders\Scenario5</Filter>
     </None>
     <None Include="shader\Wireframe\Wireframe.frag">
       <Filter>shaders\WireFrame</Filter>
@@ -358,12 +310,6 @@
     <None Include="shader\Gaussin\Gaussin.vert">
       <Filter>shaders\Gaussin</Filter>
     </None>
-    <None Include="shader\test\test.frag">
-      <Filter>shaders\ShadowParticle</Filter>
-    </None>
-    <None Include="shader\test\test.vert">
-      <Filter>shaders\ShadowParticle</Filter>
-    </None>
     <None Include="shader\EdgeDetection\EdgeDetection.frag">
       <Filter>shaders\EdgeDetection</Filter>
     </None>
@@ -381,6 +327,12 @@
     </None>
     <None Include="shader\CustomP\CustomP.vert">
       <Filter>shaders\Custom Particle Effects</Filter>
+    </None>
+    <None Include="shader\ShadowPart\ShadowPart.frag">
+      <Filter>shaders\ShadowParticle</Filter>
+    </None>
+    <None Include="shader\ShadowPart\ShadowPart.vert">
+      <Filter>shaders\ShadowParticle</Filter>
     </None>
   </ItemGroup>
 </Project>

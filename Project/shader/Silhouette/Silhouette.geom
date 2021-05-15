@@ -1,5 +1,10 @@
 #version 460
 
+//
+//	--- Duplication of Geom for use in Mix1, See that file for comments, Saved Duplication.
+//
+
+
 layout (triangles_adjacency) in;
 layout (triangle_strip, max_vertices = 15) out;
 

@@ -1,5 +1,10 @@
 #version 460
 
+//
+//  --- Same As Custom Edge Particles -- Comments are not required as duplication.
+//
+
+
 layout (location = 0) out vec4 FragColor;
 
 uniform struct LightInfo 

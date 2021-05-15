@@ -212,16 +212,8 @@
     <None Include="shader\Gaussin\Gaussin.vert" />
     <None Include="shader\NightVision\NightVision.frag" />
     <None Include="shader\NightVision\NightVision.vert" />
-    <None Include="shader\Scenario1.frag" />
-    <None Include="shader\Scenario1.vert" />
-    <None Include="shader\Scenario2.frag" />
-    <None Include="shader\Scenario2.vert" />
-    <None Include="shader\Scenario3.frag" />
-    <None Include="shader\Scenario3.vert" />
-    <None Include="shader\Scenario4.frag" />
-    <None Include="shader\Scenario4.vert" />
-    <None Include="shader\Scenario5.frag" />
-    <None Include="shader\Scenario5.vert" />
+    <None Include="shader\ShadowPart\ShadowPart.frag" />
+    <None Include="shader\ShadowPart\ShadowPart.vert" />
     <None Include="shader\ShadowSilhouette\Comp.frag" />
     <None Include="shader\ShadowSilhouette\Comp.vert" />
     <None Include="shader\ShadowSilhouette\Render.frag" />
@@ -237,8 +229,6 @@
     <None Include="shader\SkyBox.vert" />
     <None Include="shader\SmokeEffect\SmokeEffect.frag" />
     <None Include="shader\SmokeEffect\SmokeEffect.vert" />
-    <None Include="shader\test\test.frag" />
-    <None Include="shader\test\test.vert" />
     <None Include="shader\Wireframe\Wireframe.frag" />
     <None Include="shader\Wireframe\Wireframe.geom" />
     <None Include="shader\Wireframe\Wireframe.vert" />

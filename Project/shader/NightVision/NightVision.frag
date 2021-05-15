@@ -1,18 +1,22 @@
 #version 460
 
+//From Vertex
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
 
+//Uniforms Input
 uniform int Width;
 uniform int Height;
 uniform float Radius;
 uniform sampler2D RenderTex;
 uniform sampler2D NoiseTex;
 
+//SubRoutines.
 subroutine vec4 RenderPassType();
 subroutine uniform RenderPassType RenderPass;
 
+//Material and Light Structs.
 struct LightInfo {
   vec4 Position;  // Light position in eye coords.
   vec3 Intensity; // A,D,S intensity
@@ -29,15 +33,18 @@ uniform MaterialInfo Material;
 
 layout( location = 0 ) out vec4 FragColor;
 
-vec3 phongModel( vec3 pos, vec3 norm )
+//Blin Phong For Night Vision. Texture was awkward, to add on.
+vec3 BlinnPhongModel( vec3 pos, vec3 norm )
 {
     vec3 s = normalize(vec3(Light.Position) - pos);
     vec3 v = normalize(-pos.xyz);
     vec3 r = reflect( -s, norm );
+
     vec3 ambient = Light.Intensity * Material.Ka;
     float sDotN = max( dot(s,norm), 0.0 );
     vec3 diffuse = Light.Intensity * Material.Kd * sDotN;
     vec3 spec = vec3(0.0);
+
     if( sDotN > 0.0 )
         spec = Light.Intensity * Material.Ks *
                pow( max( dot(r,v), 0.0 ), Material.Shininess );
@@ -45,16 +52,19 @@ vec3 phongModel( vec3 pos, vec3 norm )
     return ambient + diffuse + spec;
 }
 
+//Calculates Luminance.
 float luminance( vec3 color ) {
     return dot( color.rgb, vec3(0.2126, 0.7152, 0.0722) );
 }
 
+//Creating Subroutines. Returns Normal BlinnPhong
 subroutine (RenderPassType)
 vec4 pass1()
 {
-    return vec4(phongModel( Position, Normal ),1.0);
+    return vec4(BlinnPhongModel( Position, Normal ),1.0);
 }
 
+//Creating Subroutines. Returns Night Vision Look + Black Outline
 subroutine( RenderPassType )
 vec4 pass2()
 {

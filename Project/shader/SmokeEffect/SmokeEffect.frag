@@ -1,5 +1,9 @@
 #version 460
 
+//
+//	--- Duplication of Geom for use in Mix2, See that file for comments, Saved Duplication.
+//
+
 in float Transp;
 in vec2 TexCoord;
 uniform sampler2D ParticleTex;

@@ -1,5 +1,9 @@
 #version 460
 
+//
+//	--- Duplication of Geom for use in Mix2, See that file for comments, Saved Duplication.
+//
+
 const float PI = 3.14159265329;
 
 layout (location = 0) in vec3 VertexPosition;
@@ -15,19 +19,19 @@ out vec3 Velocity;
 out float Age;
 
 // Out to fragment shader
-out float Transp; // Transparency
-out vec2 TexCoord; // Texture coordinate 
+out float Transp;
+out vec2 TexCoord;
 
-uniform float Time; // Simulation Time
-uniform float DeltaT; // Elapsed time between frames
-uniform vec3 Accel; // Particle acceleration (gravity)
-uniform float ParticleLifetime; // Partical lifespan
-uniform vec3 Emitter = vec3(0); // World position of the Emitter
-uniform mat3 EmitterBasis; // Rotation that rotates y axis to the direction of emitter
-uniform float ParticleSize; // Size of particle
+uniform float Time;
+uniform float DeltaT;
+uniform vec3 Accel;
+uniform float ParticleLifetime;
+uniform vec3 Emitter = vec3(0);
+uniform mat3 EmitterBasis;
+uniform float ParticleSize;
 
-uniform float MinParticleSize = 0.1; // Minimum size
-uniform float MaxParticleSize = 2.5; // Maximum size
+uniform float MinParticleSize = 0.1;
+uniform float MaxParticleSize = 2.5;
 
 uniform mat4 ModelViewMatrix;
 uniform mat4 ProjMatrix;

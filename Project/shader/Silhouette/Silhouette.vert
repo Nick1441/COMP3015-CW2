@@ -1,5 +1,9 @@
 #version 460
 
+//
+//	--- Duplication of Geom for use in Mix1, See that file for comments, Saved Duplication.
+//
+
 layout (location = 0) in vec3 VertexPosition;
 layout (location = 1) in vec3 VertexNormal;
 
