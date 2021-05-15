@@ -143,48 +143,12 @@ private:
             glfwPollEvents();
            
 			int state = glfwGetKey(window, GLFW_KEY_SPACE);
-
-            int Key1 = glfwGetKey(window, GLFW_KEY_1);
-            int Key2 = glfwGetKey(window, GLFW_KEY_2);
-            int Key3 = glfwGetKey(window, GLFW_KEY_3);
-            int Key4 = glfwGetKey(window, GLFW_KEY_4);
-            int Key5 = glfwGetKey(window, GLFW_KEY_5);
-            int Key6 = glfwGetKey(window, GLFW_KEY_ENTER);
-            int Key7 = glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT);
             int Key8 = glfwGetKey(window, GLFW_KEY_ESCAPE);
 
             //USER INPUT KEYS
             if (state == GLFW_PRESS)
             {
                 scene.animate(!scene.animating());
-            }
-            else if (Key1 == GLFW_PRESS)
-            {
-                scene.InputPressed(1);
-            }
-            else if (Key2 == GLFW_PRESS)
-            {
-                scene.InputPressed(2);
-            }
-            else if (Key3 == GLFW_PRESS)
-            {
-                scene.InputPressed(3);
-            }
-            else if (Key4 == GLFW_PRESS)
-            {
-                scene.InputPressed(4);
-            }
-            else if (Key5 == GLFW_PRESS)
-            {
-                scene.InputPressed(5);
-            }
-            else if (Key6 == GLFW_PRESS)
-            {
-                scene.InputPressed(10);
-            }
-            else if (Key7 == GLFW_PRESS)
-            {
-                scene.InputPressed(11);
             }
             else if (Key8 == GLFW_PRESS)
             {

@@ -150,11 +150,14 @@
     <ClCompile Include="Additional Files\trianglemesh.cpp" />
     <ClCompile Include="gl3w\gl3w.c" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="helper\frustum.cpp" />
     <ClCompile Include="helper\glslprogram.cpp" />
     <ClCompile Include="helper\glutils.cpp" />
+    <ClCompile Include="helper\noisetex.cpp" />
     <ClCompile Include="helper\skybox.cpp" />
     <ClCompile Include="helper\stb\stb_image.cpp" />
     <ClCompile Include="helper\texture.cpp" />
+    <ClCompile Include="helper\torus.cpp" />
     <ClCompile Include="imGUI\imgui.cpp" />
     <ClCompile Include="imGUI\imgui_demo.cpp" />
     <ClCompile Include="imGUI\imgui_draw.cpp" />
@@ -175,8 +178,12 @@
     <ClInclude Include="Additional Files\utils.h" />
     <ClInclude Include="gl3w\gl3w.h" />
     <ClInclude Include="gl3w\glcorearb.h" />
+    <ClInclude Include="helper\frustum.h" />
     <ClInclude Include="helper\glslprogram.h" />
     <ClInclude Include="helper\glutils.h" />
+    <ClInclude Include="helper\noisetex.h" />
+    <ClInclude Include="helper\particleutils.h" />
+    <ClInclude Include="helper\random.h" />
     <ClInclude Include="helper\scene.h" />
     <ClInclude Include="helper\scenerunner.h" />
     <ClInclude Include="helper\skybox.h" />
@@ -186,6 +193,7 @@
     <ClInclude Include="helper\stb\stb_image.h" />
     <ClInclude Include="helper\stb\stb_image_write.h" />
     <ClInclude Include="helper\texture.h" />
+    <ClInclude Include="helper\torus.h" />
     <ClInclude Include="imGUI\imconfig.h" />
     <ClInclude Include="imGUI\imgui.h" />
     <ClInclude Include="imGUI\imgui_impl_glfw.h" />
@@ -194,6 +202,16 @@
     <ClInclude Include="scenebasic_uniform.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shader\Clouds\Clouds.frag" />
+    <None Include="shader\Clouds\Clouds.vert" />
+    <None Include="shader\CustomP\CustomP.frag" />
+    <None Include="shader\CustomP\CustomP.vert" />
+    <None Include="shader\EdgeDetection\EdgeDetection.frag" />
+    <None Include="shader\EdgeDetection\EdgeDetection.vert" />
+    <None Include="shader\Gaussin\Gaussin.frag" />
+    <None Include="shader\Gaussin\Gaussin.vert" />
+    <None Include="shader\NightVision\NightVision.frag" />
+    <None Include="shader\NightVision\NightVision.vert" />
     <None Include="shader\Scenario1.frag" />
     <None Include="shader\Scenario1.vert" />
     <None Include="shader\Scenario2.frag" />
@@ -204,11 +222,28 @@
     <None Include="shader\Scenario4.vert" />
     <None Include="shader\Scenario5.frag" />
     <None Include="shader\Scenario5.vert" />
+    <None Include="shader\ShadowSilhouette\Comp.frag" />
+    <None Include="shader\ShadowSilhouette\Comp.vert" />
+    <None Include="shader\ShadowSilhouette\Render.frag" />
+    <None Include="shader\ShadowSilhouette\Render.geom" />
+    <None Include="shader\ShadowSilhouette\Render.vert" />
+    <None Include="shader\ShadowSilhouette\Volume.frag" />
+    <None Include="shader\ShadowSilhouette\Volume.geom" />
+    <None Include="shader\ShadowSilhouette\Volume.vert" />
+    <None Include="shader\Silhouette\Silhouette.frag" />
+    <None Include="shader\Silhouette\Silhouette.geom" />
+    <None Include="shader\Silhouette\Silhouette.vert" />
     <None Include="shader\SkyBox.frag" />
     <None Include="shader\SkyBox.vert" />
+    <None Include="shader\SmokeEffect\SmokeEffect.frag" />
+    <None Include="shader\SmokeEffect\SmokeEffect.vert" />
+    <None Include="shader\test\test.frag" />
+    <None Include="shader\test\test.vert" />
     <None Include="shader\Wireframe\Wireframe.frag" />
     <None Include="shader\Wireframe\Wireframe.geom" />
     <None Include="shader\Wireframe\Wireframe.vert" />
+    <None Include="shader\Wood\Wood.frag" />
+    <None Include="shader\Wood\Wood.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

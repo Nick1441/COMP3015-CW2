@@ -61,6 +61,36 @@
     <Filter Include="shaders\WireFrame">
       <UniqueIdentifier>{c08dbdb9-2c1c-44c5-9313-5b04e655210a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\Silhouette">
+      <UniqueIdentifier>{2f4d90bd-726d-4f2c-bde8-b4afa6630cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Clouds">
+      <UniqueIdentifier>{2291cb2b-29da-405e-8c76-f1a2ea6c1a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Wood">
+      <UniqueIdentifier>{60297c66-9566-4582-9b03-10f9de1d92a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\ShadowSilhouette">
+      <UniqueIdentifier>{154a3e08-5795-4891-bf54-bc1369dff713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\NightVision">
+      <UniqueIdentifier>{dc20b2b7-eab4-4ca4-882b-13e223c80776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Gaussin">
+      <UniqueIdentifier>{7970fe15-db9e-477e-bb95-709d969a3caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\ShadowParticle">
+      <UniqueIdentifier>{2e34eaa7-82ca-4fe2-a227-0eea59f3c1ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\EdgeDetection">
+      <UniqueIdentifier>{1debf851-20e6-464a-a587-2ac865c6fcee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\SmokeEffects">
+      <UniqueIdentifier>{a5ae7554-8efe-482a-bfe1-cb033da61328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Custom Particle Effects">
+      <UniqueIdentifier>{3b4cf728-b379-4258-b45d-bf7a6cc16298}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +149,15 @@
     </ClCompile>
     <ClCompile Include="imGUI\imgui_impl_glfw.cpp">
       <Filter>ImGui3</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\noisetex.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\frustum.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\torus.cpp">
+      <Filter>helper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +239,21 @@
     <ClInclude Include="imGUI\imgui_impl_glfw.h">
       <Filter>ImGui3</Filter>
     </ClInclude>
+    <ClInclude Include="helper\noisetex.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\particleutils.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\frustum.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\torus.h">
+      <Filter>helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\Scenario3.frag">
@@ -246,6 +300,87 @@
     </None>
     <None Include="shader\Wireframe\Wireframe.vert">
       <Filter>shaders\WireFrame</Filter>
+    </None>
+    <None Include="shader\Silhouette\Silhouette.frag">
+      <Filter>shaders\Silhouette</Filter>
+    </None>
+    <None Include="shader\Silhouette\Silhouette.geom">
+      <Filter>shaders\Silhouette</Filter>
+    </None>
+    <None Include="shader\Silhouette\Silhouette.vert">
+      <Filter>shaders\Silhouette</Filter>
+    </None>
+    <None Include="shader\Clouds\Clouds.frag">
+      <Filter>shaders\Clouds</Filter>
+    </None>
+    <None Include="shader\Clouds\Clouds.vert">
+      <Filter>shaders\Clouds</Filter>
+    </None>
+    <None Include="shader\Wood\Wood.frag">
+      <Filter>shaders\Wood</Filter>
+    </None>
+    <None Include="shader\Wood\Wood.vert">
+      <Filter>shaders\Wood</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Comp.frag">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Comp.vert">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Render.frag">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Render.vert">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Volume.frag">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Volume.geom">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Volume.vert">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\ShadowSilhouette\Render.geom">
+      <Filter>shaders\ShadowSilhouette</Filter>
+    </None>
+    <None Include="shader\NightVision\NightVision.frag">
+      <Filter>shaders\NightVision</Filter>
+    </None>
+    <None Include="shader\NightVision\NightVision.vert">
+      <Filter>shaders\NightVision</Filter>
+    </None>
+    <None Include="shader\Gaussin\Gaussin.frag">
+      <Filter>shaders\Gaussin</Filter>
+    </None>
+    <None Include="shader\Gaussin\Gaussin.vert">
+      <Filter>shaders\Gaussin</Filter>
+    </None>
+    <None Include="shader\test\test.frag">
+      <Filter>shaders\ShadowParticle</Filter>
+    </None>
+    <None Include="shader\test\test.vert">
+      <Filter>shaders\ShadowParticle</Filter>
+    </None>
+    <None Include="shader\EdgeDetection\EdgeDetection.frag">
+      <Filter>shaders\EdgeDetection</Filter>
+    </None>
+    <None Include="shader\EdgeDetection\EdgeDetection.vert">
+      <Filter>shaders\EdgeDetection</Filter>
+    </None>
+    <None Include="shader\SmokeEffect\SmokeEffect.frag">
+      <Filter>shaders\SmokeEffects</Filter>
+    </None>
+    <None Include="shader\SmokeEffect\SmokeEffect.vert">
+      <Filter>shaders\SmokeEffects</Filter>
+    </None>
+    <None Include="shader\CustomP\CustomP.frag">
+      <Filter>shaders\Custom Particle Effects</Filter>
+    </None>
+    <None Include="shader\CustomP\CustomP.vert">
+      <Filter>shaders\Custom Particle Effects</Filter>
     </None>
   </ItemGroup>
 </Project>

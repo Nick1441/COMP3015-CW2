@@ -1,5 +1,5 @@
 #version 460
-layout (binding = 5) uniform samplerCube SkyBoxTex;
+layout (binding = 16) uniform samplerCube SkyBoxTex;
 
 in vec3 Vec;
 
