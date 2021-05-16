@@ -43,5 +43,5 @@ The Below link takes you to a YouTube review, going over further sections on *ho
 [YouTube Report](https://www.youtube.com/watch?v=wmML_VfguK0&ab_channel=NickClothier)
 
 **GitHub**<br/>
-The below link goes to the GitHub used for this project!
+The below link goes to the GitHub used for this project!<br/>
 [GitHub Repo](https://github.com/Nick1441/COMP3015-CW2)
