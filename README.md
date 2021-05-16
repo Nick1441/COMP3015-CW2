@@ -44,4 +44,4 @@ The Below link takes you to a YouTube review, going over further sections on *ho
 
 **GitHub**<br/>
 The below link goes to the GitHub used for this project!
-[YouTube Report](https://github.com/Nick1441/COMP3015-CW2)
+[GitHub Repo](https://github.com/Nick1441/COMP3015-CW2)
